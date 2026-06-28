@@ -1,0 +1,15 @@
+.vscode/
+.vs/
+test/.vs/
+<<<<<<< HEAD
+bin/
+build/
+deps/
+log/
+=======
+test/bin/
+test/build/
+test/deps/
+test/log/
+>>>>>>> 506e5d173b211110eaeeb54b0da82207225a6f0c
+
