@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.28.3)
 
 set(PROJ_THREAD_BASE "thread_base")
 
+
+# Global settings for Google Test (Valid for all platforms)
+# Force gtest to use the dynamic runtime on Windows; has no negative side effects on Linux
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
 project(${PROJ_THREAD_BASE}
   VERSION 0.4.0
   DESCRIPTION "project base of thread"
@@ -52,6 +57,10 @@ if (WIN32)
     if (MSVC)
         message(STATUS "${PROJ_THREAD_BASE} :: microsoft visual studio compiler")
         message(STATUS "${PROJ_THREAD_BASE} :: ${CMAKE_BUILD_TYPE} mode")
+
+        # Automatically sync MSVC runtime library with the build type (MDd for Debug / MD for Release)
+        set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+
         add_compile_options(/W4 /WX /wd4068 /wd4189 /wd4706)
         #
         # DEBUG (MSVC)
