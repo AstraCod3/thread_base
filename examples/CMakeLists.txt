@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.28.3)
 
 set(EXAMPLES_UDP_SERVER "examples_udp_server")
 
-
 # Global settings for Google Test (Valid for all platforms)
 # Force gtest to use the dynamic runtime on Windows; has no negative side effects on Linux
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
