@@ -1,5 +1,5 @@
 /**
- * @file google_unit_test.cpp
+ * @file base_thread.cpp
  * @brief 
  * @details
  * @author AstraCod3
@@ -27,7 +27,7 @@
  * @brief Contains all the unit tests for the multi-threading wrappers and thread components.
  * @details This namespace isolates test components, mocks, and test fixtures from the production code.
  */
-namespace ns_google_unit_test {
+namespace ns_unit_test_base_thread {
     /**
      * @brief Mock worker class used to inject test logic into the thread execution.
      * @details Inherits from the base thread wrapper to override and test the core virtual function.
@@ -117,30 +117,23 @@ namespace ns_google_unit_test {
         worker.destroy();
     }
 
+} // ns_unit_test_base_thread
 
-    void main_unit_test(int _argc, char* _argv[]) ;
-    void main_unit_test(int _argc, char* _argv[]) {
-        std::cout << "\n";
-        std::cout << "\n BEGIN -- Google Unit Test\n";
-        std::cout << "\n";
-
-        /*
-         * @brief Initi Google Test framework with arguments passando i parametri della riga di comando
-         */
-        ::testing::InitGoogleTest(&_argc, _argv);
-        
-        /*
-         * @brief Execute all TEST e TEST_F macro return 0 succeded,  otherwise return 1
-         */ 
-        int ret = RUN_ALL_TESTS();
-        if ( ret != 0 ) {
-            throw std::runtime_error("!ERROR! Unit test failure\n");
-        }
-
-        std::cout << "\n";
-        std::cout << "\n END -- Google Unit Test\n";
-        std::cout << "\n";
+/*
+ * @brief Main function
+ */
+void main(int _argc, char* _argv[]) {
+    /*
+     * @brief Initi Google Test framework with arguments passando i parametri della riga di comando
+     */
+    ::testing::InitGoogleTest(&_argc, _argv);
+    
+    /*
+     * @brief Execute all TEST e TEST_F macro return 0 succeded,  otherwise return 1
+     */ 
+    int ret = RUN_ALL_TESTS();
+    if ( ret != 0 ) {
+        throw std::runtime_error("!ERROR! Unit test failure\n");
     }
-
 
 }

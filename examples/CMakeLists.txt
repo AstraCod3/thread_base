@@ -1,15 +1,15 @@
 cmake_minimum_required(VERSION 3.28.3)
 
-set(TESTS_UDP_SERVER "tests_udp_server")
+set(EXAMPLES_UDP_SERVER "examples_udp_server")
 
 
 # Global settings for Google Test (Valid for all platforms)
 # Force gtest to use the dynamic runtime on Windows; has no negative side effects on Linux
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-project(${TESTS_UDP_SERVER}
+project(${EXAMPLES_UDP_SERVER}
   VERSION 0.4.0
-  DESCRIPTION "project unit and integration tests of udp server"
+  DESCRIPTION "example base upd server"
   LANGUAGES CXX
 )
 
@@ -20,9 +20,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Compilatori basati su UNIX (GCC e Clang)
 #
 if (UNIX)
-    message(STATUS "${TESTS_UDP_SERVER} :: OS Linux/Unix")
+    message(STATUS "${EXAMPLES_UDP_SERVER} :: OS Linux/Unix")
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-        message(STATUS "${TESTS_UDP_SERVER} :: Compile GNU")
+        message(STATUS "${EXAMPLES_UDP_SERVER} :: Compile GNU")
         add_compile_options(
             -Wall -Wextra -Wpedantic -Werror -Wshadow -Wconversion 
             -Wfloat-equal -Wdeprecated-declarations -Wnull-dereference 
@@ -33,7 +33,7 @@ if (UNIX)
 
         # Gestione corretta per generatori a configurazione singola (Make/Ninja)
         string(TOLOWER "${CMAKE_BUILD_TYPE}" BUILD_TYPE_LOWER)
-        message(STATUS "${TESTS_UDP_SERVER} :: ${CMAKE_BUILD_TYPE} mode")
+        message(STATUS "${EXAMPLES_UDP_SERVER} :: ${CMAKE_BUILD_TYPE} mode")
 
         #
         # DEBUG (G++)
@@ -52,8 +52,8 @@ if (UNIX)
     endif()
 
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        message(STATUS "${TESTS_UDP_SERVER} :: Compile Clang")
-        message(STATUS "${TESTS_UDP_SERVER} :: ${CMAKE_BUILD_TYPE} mode")
+        message(STATUS "${EXAMPLES_UDP_SERVER} :: Compile Clang")
+        message(STATUS "${EXAMPLES_UDP_SERVER} :: ${CMAKE_BUILD_TYPE} mode")
         add_compile_options(-Wshadow)
     endif()
 endif()
@@ -62,10 +62,10 @@ endif()
 # Windows OS (MSVC)
 #
 if (WIN32)
-    message(STATUS "${TESTS_UDP_SERVER} :: OS Win32")
+    message(STATUS "${EXAMPLES_UDP_SERVER} :: OS Win32")
     if (MSVC)
-        message(STATUS "${TESTS_UDP_SERVER} :: microsoft visual studio compiler")
-        message(STATUS "${TESTS_UDP_SERVER} :: ${CMAKE_BUILD_TYPE} mode")
+        message(STATUS "${EXAMPLES_UDP_SERVER} :: microsoft visual studio compiler")
+        message(STATUS "${EXAMPLES_UDP_SERVER} :: ${CMAKE_BUILD_TYPE} mode")
 
         # Automatically sync MSVC runtime library with the build type (MDd for Debug / MD for Release)
         set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
@@ -92,21 +92,20 @@ if (WIN32)
     endif (MSVC)
 endif (WIN32)
 
-# Build Unit Tests
-file(GLOB UNIT_TEST_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "unit/*.cpp")
-set( GTEST_INC_DIR "$ENV{deps_path}/out/include" )
-set( GTEST_LIB_DIR "$ENV{deps_path}/out/lib" )
-foreach(SOURCE_FILE ${UNIT_TEST_SRC})
-    get_filename_component(EXE_NAME ${SOURCE_FILE} NAME_WE)
-    set(EXE_NAME "unit_test_${EXE_NAME}")
+file(GLOB EXAMPLES_UDP_SERVER_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cpp")
+
+foreach(SOURCE_FILE ${EXAMPLES_UDP_SERVER_SRC})
+
+    get_filename_component(FILE_BASE_NAME ${SOURCE_FILE} NAME_WE)
+    
+    set(EXE_NAME "example_${FILE_BASE_NAME}")
+    
     add_executable(${EXE_NAME} ${SOURCE_FILE})
+    
     set_target_properties(${EXE_NAME} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
     )
-    target_include_directories(${EXE_NAME} PRIVATE 
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${GTEST_INC_DIR}
-    )
+
     # COMAND POST-BUILD
     add_custom_command(TARGET ${EXE_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E make_directory "$ENV{bin_path}"
@@ -115,39 +114,7 @@ foreach(SOURCE_FILE ${UNIT_TEST_SRC})
             "$ENV{bin_path}/${EXE_NAME}"
         COMMENT "Copying ${EXE_NAME} to $ENV{bin_path} directory... Done!"
     )
-    find_library(GTEST_LIB_FILE 
-        NAMES gtest gtestd 
-        PATHS "${GTEST_LIB_DIR}" 
-        NO_DEFAULT_PATH
-    )
-    find_library(GTEST_MAIN_FILE 
-        NAMES gtest_main gtest_maind 
-        PATHS "${GTEST_LIB_DIR}" 
-        NO_DEFAULT_PATH
-    )
-    target_link_libraries(${EXE_NAME} PRIVATE
-        ${GTEST_LIB_FILE}
-        ${GTEST_MAIN_FILE}
-    )
-    message(STATUS "Configured example executable: bin/${EXE_NAME}")
-endforeach()
 
-# Integration Build
-file(GLOB INTEGRATION_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "integration/*.cpp")
-foreach(SOURCE_FILE ${INTEGRATION_SRC})
-     get_filename_component(EXE_NAME ${SOURCE_FILE} NAME_WE)
-     set(EXE_NAME "integration_${EXE_NAME}")
-     add_executable(${EXE_NAME} ${SOURCE_FILE})
-     set_target_properties(${EXE_NAME} PROPERTIES
-         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-     )
-     # COMAND POST-BUILD
-     add_custom_command(TARGET ${EXE_NAME} POST_BUILD
-         COMMAND ${CMAKE_COMMAND} -E make_directory "$ENV{bin_path}"
-         COMMAND ${CMAKE_COMMAND} -E copy_if_different
-             "$<TARGET_FILE:${EXE_NAME}>"
-             "$ENV{bin_path}/${EXE_NAME}"
-         COMMENT "Copying ${EXE_NAME} to $ENV{bin_path} directory... Done!"
-     )
-     message(STATUS "Configured example executable: bin/${EXE_NAME}")
- endforeach()
+    message(STATUS "Configured example executable: bin/${EXE_NAME}")
+
+endforeach()

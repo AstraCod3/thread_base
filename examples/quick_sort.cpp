@@ -443,7 +443,7 @@ namespace ns_quick_sort {
             }
             
             /**
-             * @brief
+             * @brief Destroy all threads
              */
             void destroy_threads() {
                 std::cout << " Destroying threads\n";
@@ -456,30 +456,58 @@ namespace ns_quick_sort {
 
     };
 
-    void main_quick_sort();
+    /**
+     * @brief Main to execute example and tests
+     */
     void main_quick_sort() {
-
         std::cout << "\n BEGIN -- Example Quick Sort --\n";
-
         c_manager_quick_sort oquick_sort;
         size_t vector_size = 1ULL << 16;
         int min_value = 3;
         int max_value = 10000000;
         int num_of_threads = 1ULL;
-
         oquick_sort.sort_vector(vector_size,
-                                    min_value,
-                                    max_value,
-                                    num_of_threads);
-
+                                       min_value,
+                                       max_value,
+                                       num_of_threads);
         std::cout << "\n";
         num_of_threads = 1ULL << 4;
         oquick_sort.sort_vector(vector_size,
-                                    min_value,
-                                    max_value,
-                                    num_of_threads);
-
+                                       min_value,
+                                       max_value,
+                                       num_of_threads);
         std::cout << "\n END -- Example Quick Sort --\n";
     }
+
 } // ns_test_sort
 
+/**
+ * @brief Main to execute example and tests
+ */
+int main( ) {
+    std::cout << "\n";
+    std::cout << " =============================================================\n";
+    std::cout << "                  Run tests ...\n";
+    std::cout << " =============================================================\n";
+    std::cout << "\n";
+
+    try {
+        ns_quick_sort::main_quick_sort( );
+    }
+    catch (const ns_thread_base::thread_lifecycle_error& e) {
+        std::cout << "Exeception failure\n";
+        std::cout << e.what() <<"\n";
+        return EXIT_FAILURE; 
+    }
+    catch (const std::runtime_error& e) {
+        std::cerr << "Exeception runtime failure : " << e.what() << std::endl;
+        return EXIT_FAILURE; 
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Exeception standard failure : " << e.what() << std::endl;
+        return EXIT_FAILURE; 
+    }
+
+    std::cout << "..done!\n";
+    return EXIT_SUCCESS;
+}

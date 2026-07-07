@@ -3,14 +3,14 @@
 Follow these steps to build and run the test suite:
 
 1. **Add your test files**  
-   Place your source files inside the `src/` directory and ensure your main entry point is added to `src/test.cpp`.
+   Place your source files inside the `./unit` and/or `./integration` directory
 
 2. **Build the project**  
    Run the appropriate script for your operating system from the root folder:
-   * **Linux/Unix:** `./scripts/build.sh`
-   * **Windows:** `.\scripts\build.cmd`
+   * **Linux/Unix:** `./scripts/build.sh debug tests`
+   * **Windows:** `.\scripts\build.cmd debug tests`
    
-   > ℹ️ *Note: The `CMakeLists.txt` file automatically loops through all source files in the `src/` directory and builds a separate executable for each one.*
+   > ℹ️ *Note: The `CMakeLists.txt` file automatically loops through all source files in t and ensure your main entry point is added to `src/test.cpp`.he `src/` directory and builds a separate executable for each one.*
 
 3. **Run the tests**  
    Execute the run scripts to test your code:
@@ -24,8 +24,8 @@ Follow these steps to build and run the test suite:
 ## 📂 Test Project Structure
 
 ```text
-├── src/                  # Source files for test execution (e.g., test.cpp)
-├── scripts/              # Build and run scripts (execute as ./scripts/build.sh)
+├── unit/                 # Source files for test execution (e.g., test.cpp)
+├── integration/          # Build and run scripts (execute as ./scripts/build.sh)
 ├── CMakeLists.txt        # Main CMake configuration file
 └── README.md             # This documentation file
 ```

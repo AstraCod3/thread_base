@@ -8,7 +8,7 @@
 
 ---
 
-A multi-platform (Linux/Unix, Windows) library developed with the Standard Template Library (STL). It provides robust support for managing and synchronizing all your custom threads, offering an efficient solution for implementing real-time systems.
+A multi-platform (Linux/Unix, Windows) header-only developed with the Standard Template Library (STL). It provides robust support for managing and synchronizing all your custom threads, offering an efficient solution for implementing real-time systems.
 
 ---
 
@@ -25,13 +25,16 @@ Follow these steps to integrate and manage threads in your application:
 2. **Create a Subclass**
    Create a custom class that inherits from the abstract class:
    ```cpp
-   ns_thread_base::cthread_base
+   class my_thread : public ns_thread_base::cthread_base {
+   ...
    ```
 
 3. **Implement the Virtual Function**
    Override the pure virtual function where your thread logic will live:
    ```cpp
-   void thread_function() override;
+   void my_thread::thread_function() override {
+      // to do something
+   }
    ```
 
 4. **Create the Thread**
@@ -40,33 +43,42 @@ Follow these steps to integrate and manage threads in your application:
 
 5. **Run the Thread**
    Call the `run()` function when you are ready to start execution.
+   ```cpp
+   my_thread obj_my_thread;
+   obj_my_thread.run();
+   ```
    > ⚡ **Note:** This function is **NON-BLOCKING**.
 
 6. **Destroy the Thread**
    After calling `run()`, you must call `destroy()` to clean up resources. 
-   * This function is **BLOCKING**.
+   ```cpp
+   obj_my_thread.destroy();
+   ```
+   > ⚠️ **Note:** This function is **BLOCKING**.
    * Failing to call `destroy()` after `run()` will raise an exception.
    * You can call `destroy()` to terminate the thread, but ensure it happens *after* `create()`, otherwise an exception will be thrown.
 
 ---
 
 ### 💡 Examples
-For a practical implementation, please check the `example_mythread()` function inside the **`test/src/test_cthread_base.cpp`** file.
+For a practical implementation, please check the `ns_quick_sort` namespace inside the **`test/example/quick_sort.cpp`** file.
 
 ---
 
 ## 📂 Project Structure
 
 ```text
-├── thread_base/ ............... # Source code of the library
-├── test/ ...................... # Unit tests and debugging tools
-│   ├── CMakeLists.txt ............. # Main CMake configuration file
-│   ├── quick_sort.hpp ............. # Example of quick sort algorithm
-│   ├── google_unit_test.hpp ....... # Google Test framework
-│   ├── test.cpp ................... # Main test entry point
-│   └── failure.hpp ................ # Test failure cases and utilities
-├── scripts/ ................... # Cross-platform automation and build tools (see details below)
-└── README.md .................. # Project documentation file
+├── examples/ ................. # Example implementations and client scripts
+│   ├── quick_sort.cpp ............. # Quick sor algorithm with multi-threads
+│   └── CMakeLists.txt ..............# CMake configuration for examples
+├── scripts/ .................. # Cross-platform automation and build tools (see details below)
+├── tests/ ......................... # Testing environment (GoogleTest)
+│   ├── integration/ ............... # Source code of the integration tests
+│   ├── unit/ ...................... # Source code of the unit tests
+│   ├── CMakeLists.txt ............. # CMake configuration for tests
+│   └── README.md .................. # Tests documentation file
+├── thread_base/ .............. # Source code of the library
+└── README.md ................. # Project documentation file
 ```
 
 ---

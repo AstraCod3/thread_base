@@ -200,7 +200,7 @@ namespace ns_thread_base {
          *        The function is !!!NOT BLOCKING!!!.
          *        This function must be called when we want the thread to run.
          *        It executes the "thread_function()" in the thread.
-         * @throw Thread is NOT created
+         * @throw thread_lifecycle_error Throw if the thread is NOT created
          */
         void run() {
             if ( !is_thread_ptr_null() ) {
@@ -228,7 +228,7 @@ namespace ns_thread_base {
          *        It must be called to destroy the internal object.
          *        Deletes the 'mptr_thr' pointer and sets it to nullptr.
          * 
-         * @throw std::runtime_error If the thread was not created.
+         * @throw thread_lifecycle_error Throw if the thread was not created.
          */
         void destroy() {
             if ( !is_thread_ptr_null() ) {
@@ -255,7 +255,7 @@ namespace ns_thread_base {
          * @return Returns enum THR_STATUS
          */
         THR_STATUS get_status() const noexcept {
-            return m_status.load();
+            return mstatus.load();
         }
 
         /**
@@ -282,7 +282,7 @@ namespace ns_thread_base {
          * @return FALSE The thread is NOT ready status.
          */
         bool is_ready() const noexcept {
-            return m_status.load() == THR_STATUS::READY;
+            return mstatus.load() == THR_STATUS::READY;
         }
         
         /**
@@ -291,7 +291,7 @@ namespace ns_thread_base {
          * @return FALSE The hread is NOT running status.
          */
         bool is_running() const noexcept {
-            return m_status.load() == THR_STATUS::RUN;
+            return mstatus.load() == THR_STATUS::RUN;
         }
 
         /**
@@ -300,7 +300,7 @@ namespace ns_thread_base {
          * @return FALSE The thread has NOT exited
          */
         bool is_exited() const noexcept {
-            return m_status.load() == THR_STATUS::EXIT;
+            return mstatus.load() == THR_STATUS::EXIT;
         }
 
         /**
@@ -309,7 +309,7 @@ namespace ns_thread_base {
          * @return FALSE The thread has NOT exited
          */
         bool is_destroyed() const noexcept {
-            return m_status.load() == THR_STATUS::DESTROY;
+            return mstatus.load() == THR_STATUS::DESTROY;
         }
 
         /**
@@ -323,7 +323,7 @@ namespace ns_thread_base {
         /**
          * @brief Set Name of thread
          * @param _thr_name [in] name of thread
-         * @throw
+         * @throw thread_lifecycle_error Throw if the thread is NOT created
          */
         void set_name(const std::string& _thr_name) {
             if (get_status() ==  THR_STATUS::INIT) {
@@ -428,7 +428,7 @@ namespace ns_thread_base {
         /**
          * @brief Thread-safe lifecycle status.
          */
-        std::atomic<THR_STATUS> m_status{THR_STATUS::INIT};
+        std::atomic<THR_STATUS> mstatus{THR_STATUS::INIT};
 
         /**
          * @brief Stores The Thread Id assigned by operative system
@@ -553,7 +553,7 @@ namespace ns_thread_base {
          * @param _s [in] The status of thread
          */
         void set_status(enum THR_STATUS _s) {
-            m_status.store(_s, std::memory_order_relaxed);
+            mstatus.store(_s, std::memory_order_relaxed);
         }
 
         /**

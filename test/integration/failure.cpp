@@ -191,24 +191,22 @@ namespace ns_failure {
                }
            }
         }
-
     };
 
-
-    /**
-     * @brief 
-     */
-    void main_failure();
-    void main_failure() {
-        std::cout << "\n";
-        std::cout << "\n BEGIN -- Test Failure\n";
-        std::cout << "\n";
-
-        cmanager_failure ofail;
-        ofail.test_failed_sequence_of_commands();
-
-        std::cout << "\n END -- Test Failure\n";
-        std::cout << "\n";
-    }
 } // ns_failure
 
+/**
+ * @brief 
+ */
+int main() {
+    std::cout << "\n";
+    std::cout << "\n BEGIN -- Test Failure\n";
+    std::cout << "\n";
+
+    cmanager_failure ofail;
+    ofail.test_failed_sequence_of_commands();
+
+    std::cout << "\n END -- Test Failure\n";
+    std::cout << "\n";
+    return EXIT_SUCCESS;
+}
