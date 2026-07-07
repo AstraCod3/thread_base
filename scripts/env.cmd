@@ -7,8 +7,16 @@ if "%script_path:~-1%"=="\" set "script_path=%script_path:~0,-1%"
 
 :: 2. Set lowercase paths relative to project root
 set "root_path=%script_path%\.."
+
 set "build_path=%root_path%\build"
+set "build_examples_path=%build_path%\examples"
+set "build_tests_path=%build_path%\tests"
+
 set "bin_path=%root_path%\bin"
+
 set "deps_path=%root_path%\deps"
+
 set "log_path=%root_path%\log"
-set "test_path=%root_path%\test"
+
+set "src_examples_path=%root_path%/examples"
+set "src_tests_path=%root_path%/tests"

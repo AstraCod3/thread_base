@@ -1,35 +1,67 @@
 @echo off
+setlocal enabledelayedexpansion
 
 echo.
-echo Start Running ...
+echo Running Binary ...
 echo.
 
-:: Include the common environment file for paths
 call "%~dp0env.cmd"
 
-:: Save current directory to return later
 set "current_path=%cd%"
 
-echo.
 if not exist "%bin_path%" (
-    echo  ERROR! : folder "%bin_path%" does not exist, run ".\scripts\build.cmd" before
+    echo  ERROR! : folder "%bin_path%" does not exist. Run "build.cmd" before.
     echo.
     exit /b 1
 )
 
-:: Move into bin path and execute all binaries found
 cd /d "%bin_path%"
-for /f "tokens=*" %%f in ('dir /b *.exe') do (
-    echo run executable file : %%f
-    "%%f"
-    if errorlevel 1 (
+
+for %%f in (unit_test*.exe) do (
+    if exist "%%f" (
+        echo run executable file : %%f
+        "%%f"
+        if !errorlevel! neq 0 (
+            echo.
+            echo AARRGGHH!!! %%f executable failed. Exiting script.
+            echo.
+            cd /d "%current_path%"
+            exit /b 1
+        )
         echo.
-        echo AARRGGHH!!! %%f executable failed. Exiting script.
-        echo.
-        cd /d "%current_path%"
-        exit /b 1
     )
 )
+
+for %%f in (integration*.exe) do (
+    if exist "%%f" (
+        echo run executable file : %%f
+        "%%f"
+        if !errorlevel! neq 0 (
+            echo.
+            echo AARRGGHH!!! %%f executable failed. Exiting script.
+            echo.
+            cd /d "%current_path%"
+            exit /b 1
+        )
+        echo.
+    )
+)
+
+for %%f in (example*.exe) do (
+    if exist "%%f" (
+        echo run executable file : %%f
+        "%%f"
+        if !errorlevel! neq 0 (
+            echo.
+            echo AARRGGHH!!! %%f executable failed. Exiting script.
+            echo.
+            cd /d "%current_path%"
+            exit /b 1
+        )
+        echo.
+    )
+)
+
 cd /d "%current_path%"
 
 echo.

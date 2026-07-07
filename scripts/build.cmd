@@ -68,7 +68,7 @@ if "%build_tests%"=="on" (
 
     echo.
     echo Building Unit and Integration Tests
-    cmake "%tests_path%" -DCMAKE_BUILD_TYPE=%build_type%
+    cmake "%src_tests_path%" -DCMAKE_BUILD_TYPE=%build_type%
     cmake --build . --config %build_type%
 )
 
@@ -78,7 +78,7 @@ if "%build_examples%"=="on" (
     cd /d "%build_examples_path%"
     echo.
     echo Building examples
-    cmake "%examples_path%" -DCMAKE_BUILD_TYPE=%build_type%
+    cmake "%src_examples_path%" -DCMAKE_BUILD_TYPE=%build_type%
     cmake --build . --config %build_type%
 )
 

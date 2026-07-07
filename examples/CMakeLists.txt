@@ -1,14 +1,14 @@
 cmake_minimum_required(VERSION 3.28.3)
 
-set(EXAMPLES_UDP_SERVER "examples_udp_server")
+set(EXAMPLE_THREAD_BASE "example_thread_base")
 
 # Global settings for Google Test (Valid for all platforms)
 # Force gtest to use the dynamic runtime on Windows; has no negative side effects on Linux
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-project(${EXAMPLES_UDP_SERVER}
-  VERSION 0.4.0
-  DESCRIPTION "example base upd server"
+project(${EXAMPLE_THREAD_BASE}
+  VERSION 1.0.0
+  DESCRIPTION "example thread base"
   LANGUAGES CXX
 )
 
@@ -19,9 +19,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Compilatori basati su UNIX (GCC e Clang)
 #
 if (UNIX)
-    message(STATUS "${EXAMPLES_UDP_SERVER} :: OS Linux/Unix")
+    message(STATUS "${EXAMPLE_THREAD_BASE} :: OS Linux/Unix")
     if(CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-        message(STATUS "${EXAMPLES_UDP_SERVER} :: Compile GNU")
+        message(STATUS "${EXAMPLE_THREAD_BASE} :: Compile GNU")
         add_compile_options(
             -Wall -Wextra -Wpedantic -Werror -Wshadow -Wconversion 
             -Wfloat-equal -Wdeprecated-declarations -Wnull-dereference 
@@ -32,7 +32,7 @@ if (UNIX)
 
         # Gestione corretta per generatori a configurazione singola (Make/Ninja)
         string(TOLOWER "${CMAKE_BUILD_TYPE}" BUILD_TYPE_LOWER)
-        message(STATUS "${EXAMPLES_UDP_SERVER} :: ${CMAKE_BUILD_TYPE} mode")
+        message(STATUS "${EXAMPLE_THREAD_BASE} :: ${CMAKE_BUILD_TYPE} mode")
 
         #
         # DEBUG (G++)
@@ -51,8 +51,8 @@ if (UNIX)
     endif()
 
     if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        message(STATUS "${EXAMPLES_UDP_SERVER} :: Compile Clang")
-        message(STATUS "${EXAMPLES_UDP_SERVER} :: ${CMAKE_BUILD_TYPE} mode")
+        message(STATUS "${EXAMPLE_THREAD_BASE} :: Compile Clang")
+        message(STATUS "${EXAMPLE_THREAD_BASE} :: ${CMAKE_BUILD_TYPE} mode")
         add_compile_options(-Wshadow)
     endif()
 endif()
@@ -61,10 +61,10 @@ endif()
 # Windows OS (MSVC)
 #
 if (WIN32)
-    message(STATUS "${EXAMPLES_UDP_SERVER} :: OS Win32")
+    message(STATUS "${EXAMPLE_THREAD_BASE} :: OS Win32")
     if (MSVC)
-        message(STATUS "${EXAMPLES_UDP_SERVER} :: microsoft visual studio compiler")
-        message(STATUS "${EXAMPLES_UDP_SERVER} :: ${CMAKE_BUILD_TYPE} mode")
+        message(STATUS "${EXAMPLE_THREAD_BASE} :: microsoft visual studio compiler")
+        message(STATUS "${EXAMPLE_THREAD_BASE} :: ${CMAKE_BUILD_TYPE} mode")
 
         # Automatically sync MSVC runtime library with the build type (MDd for Debug / MD for Release)
         set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")

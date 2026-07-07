@@ -6,7 +6,7 @@ set(THREAD_BASE "thread_base")
 # Force gtest to use the dynamic runtime on Windows; has no negative side effects on Linux
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-project(${thread_base}
+project(${THREAD_BASE}
   VERSION 0.4.0
   DESCRIPTION "project unit and integration tests of udp server"
   LANGUAGES CXX
