@@ -5,16 +5,15 @@ echo.
 echo Starting Build ...
 echo.
 
-:: Include il file di ambiente comune per i percorsi
-:: Sostituisce il comando `. "$(dirname "$0")/env.sh" "$0"`
+:: Include the common environment file for paths
 call "%~dp0env.cmd"
 
-:: Configura i valori predefiniti
+:: Set default actions and build type
 set "build_type=Release"
 set "build_tests=on"
 set "build_examples=on"
 
-:: Analizza gli argomenti passati da riga di comando
+:: If no arguments provided, default to building the project
 :parse_args
 if "%~1"=="" goto end_parse_args
 
@@ -43,7 +42,7 @@ if "%~1"=="examples" (
     goto parse_args
 )
 
-:: Se l'argomento non è valido
+:: If argument is invalid, show error
 echo Error: Invalid option '%~1'
 echo Use -h or --help to see available options.
 exit /b 1
@@ -52,7 +51,6 @@ exit /b 1
 
 set "current_path=%cd%"
 
-:: Gestione della compilazione dei test
 if "%build_tests%"=="on" (
     if not exist "%build_tests_path%" mkdir "%build_tests_path%"
     cd /d "%build_tests_path%"
@@ -92,7 +90,7 @@ if exist "%bin_path%\*.lib" del /f /q "%bin_path%\*.lib"
 
 exit /b 0
 
-:: Funzione per mostrare l'aiuto
+
 :show_help
 echo Usage: %~nx0 [OPTION]
 echo.
