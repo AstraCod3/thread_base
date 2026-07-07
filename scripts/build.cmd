@@ -68,7 +68,7 @@ if "%build_tests%"=="on" (
 
     echo.
     echo Building Unit and Integration Tests
-    cmake "%src_tests_path%" -DCMAKE_BUILD_TYPE=%build_type%
+    cmake "%tests_path%" -DCMAKE_BUILD_TYPE=%build_type%
     cmake --build . --config %build_type%
 )
 
@@ -78,15 +78,18 @@ if "%build_examples%"=="on" (
     cd /d "%build_examples_path%"
     echo.
     echo Building examples
-    cmake "%src_examples_path%" -DCMAKE_BUILD_TYPE=%build_type%
+    cmake "%examples_path%" -DCMAKE_BUILD_TYPE=%build_type%
     cmake --build . --config %build_type%
 )
 
 cd /d "%current_path%"
 
-echo.
-echo ... done!
-echo.
+echo Cleaning debug symbols ...
+if exist "%bin_path%\*.pdb" del /f /q "%bin_path%\*.pdb"
+if exist "%bin_path%\*.ilk" del /f /q "%bin_path%\*.ilk"
+if exist "%bin_path%\*.exp" del /f /q "%bin_path%\*.exp"
+if exist "%bin_path%\*.lib" del /f /q "%bin_path%\*.lib"
+
 exit /b 0
 
 :: Funzione per mostrare l'aiuto

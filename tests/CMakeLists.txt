@@ -92,61 +92,87 @@ if (WIN32)
 endif (WIN32)
 
 # Build Unit Tests
-file(GLOB UNIT_TEST_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "unit/*.cpp")
-set( GTEST_INC_DIR "$ENV{deps_path}/out/include" )
-set( GTEST_LIB_DIR "$ENV{deps_path}/out/lib" )
+message(STATUS "${THREAD_BASE} :: Build Unit Tests")
+# =====================================================================
+# GOOGLE TEST CONFIGURATION (Libraries and Includes)
+# =====================================================================
+set(GTEST_INC_DIR "$ENV{deps_path}/out/include")
+set(GTEST_LIB_DIR "$ENV{deps_path}/out/lib")
+
+# Locate libraries OUTSIDE the loop for efficiency and proper CMake caching
+find_library(GTEST_LIB_FILE 
+    NAMES gtest gtestd 
+    PATHS "${GTEST_LIB_DIR}" 
+    NO_DEFAULT_PATH
+)
+find_library(GTEST_MAIN_FILE 
+    NAMES gtest_main gtest_maind 
+    PATHS "${GTEST_LIB_DIR}" 
+    NO_DEFAULT_PATH
+)
+
+# =====================================================================
+# BUILD UNIT TESTS
+# =====================================================================
+message(STATUS "${THREAD_BASE} :: Build Unit Tests")
+
+# Use a unified absolute path pattern to prevent directory matching issues
+file(GLOB UNIT_TEST_SRC "${CMAKE_CURRENT_SOURCE_DIR}/unit/*.cpp")
+
 foreach(SOURCE_FILE ${UNIT_TEST_SRC})
-    get_filename_component(EXE_NAME ${SOURCE_FILE} NAME_WE)
-    set(EXE_NAME "unit_test_${EXE_NAME}")
-    add_executable(${EXE_NAME} ${SOURCE_FILE})
-    set_target_properties(${EXE_NAME} PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-    )
-    target_include_directories(${EXE_NAME} PRIVATE 
-        ${CMAKE_CURRENT_SOURCE_DIR}
-        ${GTEST_INC_DIR}
-    )
-    # COMAND POST-BUILD
-    add_custom_command(TARGET ${EXE_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory "$ENV{bin_path}"
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "$<TARGET_FILE:${EXE_NAME}>"
-            "$ENV{bin_path}/${EXE_NAME}"
-        COMMENT "Copying ${EXE_NAME} to $ENV{bin_path} directory... Done!"
-    )
-    find_library(GTEST_LIB_FILE 
-        NAMES gtest gtestd 
-        PATHS "${GTEST_LIB_DIR}" 
-        NO_DEFAULT_PATH
-    )
-    find_library(GTEST_MAIN_FILE 
-        NAMES gtest_main gtest_maind 
-        PATHS "${GTEST_LIB_DIR}" 
-        NO_DEFAULT_PATH
-    )
-    target_link_libraries(${EXE_NAME} PRIVATE
-        ${GTEST_LIB_FILE}
-        ${GTEST_MAIN_FILE}
-    )
-    message(STATUS "Configured example executable: bin/${EXE_NAME}")
+    get_filename_component(FILE_BASE_NAME ${SOURCE_FILE} NAME_WE)
+    
+    # Guard against invalid ghost targets caused by folder names or empty matches
+    if(NOT "${FILE_BASE_NAME}" STREQUAL "unit" AND NOT "${FILE_BASE_NAME}" STREQUAL "")
+        set(EXE_NAME "unit_test_${FILE_BASE_NAME}")
+        
+        add_executable(${EXE_NAME} ${SOURCE_FILE})
+
+        # Force binary output directory to the global /bin folder for all MSVC configurations
+        set_target_properties(${EXE_NAME} PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "$ENV{bin_path}"
+            RUNTIME_OUTPUT_DIRECTORY_DEBUG "$ENV{bin_path}"
+            RUNTIME_OUTPUT_DIRECTORY_RELEASE "$ENV{bin_path}"
+        )
+
+        target_include_directories(${EXE_NAME} PRIVATE 
+            ${CMAKE_CURRENT_SOURCE_DIR}
+            ${GTEST_INC_DIR}
+        )
+
+        target_link_libraries(${EXE_NAME} PRIVATE
+            ${GTEST_LIB_FILE}
+            ${GTEST_MAIN_FILE}
+        )
+        
+        message(STATUS "Configured unit test executable: bin/${EXE_NAME}")
+    endif()
 endforeach()
 
-# Integration Build
-file(GLOB INTEGRATION_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "integration/*.cpp")
+# =====================================================================
+# BUILD INTEGRATION TESTS
+# =====================================================================
+message(STATUS "${THREAD_BASE} :: Build Integration")
+
+# Use a unified absolute path pattern to prevent directory matching issues
+file(GLOB INTEGRATION_SRC "${CMAKE_CURRENT_SOURCE_DIR}/integration/*.cpp")
+
 foreach(SOURCE_FILE ${INTEGRATION_SRC})
-     get_filename_component(EXE_NAME ${SOURCE_FILE} NAME_WE)
-     set(EXE_NAME "integration_${EXE_NAME}")
-     add_executable(${EXE_NAME} ${SOURCE_FILE})
-     set_target_properties(${EXE_NAME} PROPERTIES
-         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
-     )
-     # COMAND POST-BUILD
-     add_custom_command(TARGET ${EXE_NAME} POST_BUILD
-         COMMAND ${CMAKE_COMMAND} -E make_directory "$ENV{bin_path}"
-         COMMAND ${CMAKE_COMMAND} -E copy_if_different
-             "$<TARGET_FILE:${EXE_NAME}>"
-             "$ENV{bin_path}/${EXE_NAME}"
-         COMMENT "Copying ${EXE_NAME} to $ENV{bin_path} directory... Done!"
-     )
-     message(STATUS "Configured example executable: bin/${EXE_NAME}")
- endforeach()
+    get_filename_component(FILE_BASE_NAME ${SOURCE_FILE} NAME_WE)
+    
+    # Guard against invalid ghost targets caused by folder names or empty matches
+    if(NOT "${FILE_BASE_NAME}" STREQUAL "integration" AND NOT "${FILE_BASE_NAME}" STREQUAL "")
+        set(EXE_NAME "integration_${FILE_BASE_NAME}")
+        
+        add_executable(${EXE_NAME} ${SOURCE_FILE})
+        
+        # Force binary output directory to the global /bin folder for all MSVC configurations
+        set_target_properties(${EXE_NAME} PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "$ENV{bin_path}"
+            RUNTIME_OUTPUT_DIRECTORY_DEBUG "$ENV{bin_path}"
+            RUNTIME_OUTPUT_DIRECTORY_RELEASE "$ENV{bin_path}"
+        )
+        
+        message(STATUS "Configured integration test executable: bin/${EXE_NAME}")
+    endif()
+endforeach()

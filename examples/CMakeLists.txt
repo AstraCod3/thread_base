@@ -94,26 +94,13 @@ endif (WIN32)
 file(GLOB EXAMPLES_UDP_SERVER_SRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cpp")
 
 foreach(SOURCE_FILE ${EXAMPLES_UDP_SERVER_SRC})
-
     get_filename_component(FILE_BASE_NAME ${SOURCE_FILE} NAME_WE)
-    
     set(EXE_NAME "example_${FILE_BASE_NAME}")
-    
     add_executable(${EXE_NAME} ${SOURCE_FILE})
-    
     set_target_properties(${EXE_NAME} PROPERTIES
-        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+        RUNTIME_OUTPUT_DIRECTORY "$ENV{bin_path}"
+        RUNTIME_OUTPUT_DIRECTORY_DEBUG "$ENV{bin_path}"
+        RUNTIME_OUTPUT_DIRECTORY_RELEASE "$ENV{bin_path}"
     )
-
-    # COMAND POST-BUILD
-    add_custom_command(TARGET ${EXE_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory "$ENV{bin_path}"
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "$<TARGET_FILE:${EXE_NAME}>"
-            "$ENV{bin_path}/${EXE_NAME}"
-        COMMENT "Copying ${EXE_NAME} to $ENV{bin_path} directory... Done!"
-    )
-
     message(STATUS "Configured example executable: bin/${EXE_NAME}")
-
 endforeach()
