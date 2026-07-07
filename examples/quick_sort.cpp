@@ -459,6 +459,7 @@ namespace ns_quick_sort {
     /**
      * @brief Main to execute example and tests
      */
+    void main_quick_sort() ;
     void main_quick_sort() {
         std::cout << "\n BEGIN -- Example Quick Sort --\n";
         c_manager_quick_sort oquick_sort;

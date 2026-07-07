@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo ""
-echo "Start Running Test ..."
+echo "Running Binary ..."
 echo ""
 
 # Include the common environment file for paths
@@ -9,15 +9,16 @@ echo ""
 
 current_path=$(pwd)
 
-echo ""
-if [ ! -d "$tbt_bin_path" ]; then
-    echo " ERROR! : folder \""$tbt_bin_path"\" is no exist run \"./test_build.sh\" before"
+if [ ! -d "$bin_path" ]; then
+    echo " ERROR! : folder \""$bin_path"\" is no exist run \"./test_build.sh\" before"
     echo ""
     exit
 fi
 
-cd "$tbt_bin_path"
-for filename in $(ls -1); do
+cd "$bin_path"
+
+# Running UNIT TESTS
+for filename in $(ls -1 unit_test*); do
     echo "run executable file : $filename"
     ./"$filename"
     if [ $? -ne 0 ]; then
@@ -26,10 +27,34 @@ for filename in $(ls -1); do
         echo ""
         exit 1
     fi
+    echo ""
+done
+
+# Running INTEGRATION TESTS
+for filename in $(ls -1 integration*); do
+    echo "run executable file : $filename"
+    ./"$filename"
+    if [ $? -ne 0 ]; then
+        echo ""
+        echo "AARRGGHH!!! $filename executable failed. Exiting script."
+        echo ""
+        exit 1
+    fi
+    echo ""
+done
+
+# Running EXAMPLES 
+for filename in $(ls -1 example*); do
+    echo "run executable file : $filename"
+    ./"$filename"
+    if [ $? -ne 0 ]; then
+        echo ""
+        echo "AARRGGHH!!! $filename executable failed. Exiting script."
+        echo ""
+        exit 1
+    fi
+    echo ""
 done
 
 cd "$current_path"
 
-echo ""
-echo "... done!"
-echo ""

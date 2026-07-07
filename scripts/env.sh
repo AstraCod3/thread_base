@@ -1,9 +1,11 @@
 #!/bin/sh
 
-export tbt_script_path=$(cd "$(dirname "$0")" && pwd)
-export tbt_root_path="$tbt_script_path/.."
-export tbt_build_path="$tbt_root_path/build"
-export tbt_bin_path="$tbt_root_path/bin"
-export tbt_deps_path="$tbt_root_path/deps"
-export tbt_log_path="$tbt_root_path/log"
-export tbt_test_path="$tbt_root_path/test"
+export script_path=$(cd "$(dirname "$0")" && pwd)
+export root_path="$script_path/.."
+export build_examples_path="$root_path/build/examples"
+export build_tests_path="$root_path/build/tests"
+export bin_path="$root_path/bin"
+export deps_path="$root_path/deps"
+export log_path="$root_path/log"
+export examples_path="$root_path/examples"
+export tests_path="$root_path/tests"

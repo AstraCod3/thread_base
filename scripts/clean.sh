@@ -4,29 +4,29 @@ echo "Start Clean ..."
 
 . "$(dirname "$0")/env.sh" "$0"
 
-export tbt_build_path="$tbt_script_path/../build"
-export tbt_bin_path="$tbt_script_path/../bin"
-export tbt_deps_path="$tbt_script_path/../deps"
-export tbt_log_path="$tbt_script_path/../log"
+export build_path="$script_path/../build"
+export bin_path="$script_path/../bin"
+export deps_path="$script_path/../deps"
+export log_path="$script_path/../log"
 
-if [ -d "$tbt_build_path" ]; then
-    echo "remove directory: $tbt_build_path"
-    rm -rf "$tbt_build_path"
+if [ -d "$build_path" ]; then
+    echo "remove directory: $build_path"
+    rm -rf "$build_path"
 fi
 
-if [ -d "$tbt_bin_path" ]; then
-    echo "remove directory: $tbt_bin_path"
-    rm -rf "$tbt_bin_path"
+if [ -d "$bin_path" ]; then
+    echo "remove directory: $bin_path"
+    rm -rf "$bin_path"
 fi
 
-if [ -d "$tbt_deps_path" ]; then
-    echo "remove directory: $tbt_deps_path"
-    rm -rf "$tbt_deps_path"
+if [ -d "$deps_path" ]; then
+    echo "remove directory: $deps_path"
+    rm -rf "$deps_path"
 fi
 
-if [ -d "$tbt_log_path" ]; then
-    echo "remove directory: $tbt_log_path"
-    rm -rf "$tbt_log_path"
+if [ -d "$log_path" ]; then
+    echo "remove directory: $log_path"
+    rm -rf "$log_path"
 fi
 
 echo " "

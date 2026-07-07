@@ -23,7 +23,7 @@
 #include <algorithm> // std::sort
 #include <utility> // std::swap
 
-#include "../thread_base/cthread_base.hpp"
+#include "../../thread_base/cthread_base.hpp"
 
 
 namespace ns_failure {
@@ -203,7 +203,7 @@ int main() {
     std::cout << "\n BEGIN -- Test Failure\n";
     std::cout << "\n";
 
-    cmanager_failure ofail;
+    ns_failure::cmanager_failure ofail;
     ofail.test_failed_sequence_of_commands();
 
     std::cout << "\n END -- Test Failure\n";

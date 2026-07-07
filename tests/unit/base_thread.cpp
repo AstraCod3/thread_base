@@ -122,7 +122,7 @@ namespace ns_unit_test_base_thread {
 /*
  * @brief Main function
  */
-void main(int _argc, char* _argv[]) {
+int main(int _argc, char* _argv[]) {
     /*
      * @brief Initi Google Test framework with arguments passando i parametri della riga di comando
      */
@@ -136,4 +136,5 @@ void main(int _argc, char* _argv[]) {
         throw std::runtime_error("!ERROR! Unit test failure\n");
     }
 
+    return EXIT_SUCCESS;
 }
