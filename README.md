@@ -72,7 +72,7 @@ For a practical implementation, please check the `ns_quick_sort` namespace insid
 │   ├── quick_sort.cpp ............. # Quick sor algorithm with multi-threads
 │   └── CMakeLists.txt ..............# CMake configuration for examples
 ├── scripts/ .................. # Cross-platform automation and build tools (see details below)
-├── tests/ ......................... # Testing environment (GoogleTest)
+├── tests/ .....................# Testing environment (GoogleTest)
 │   ├── integration/ ............... # Source code of the integration tests
 │   ├── unit/ ...................... # Source code of the unit tests
 │   ├── CMakeLists.txt ............. # CMake configuration for tests
