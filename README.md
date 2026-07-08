@@ -61,7 +61,7 @@ Follow these steps to integrate and manage threads in your application:
 ---
 
 ### 💡 Examples
-For a practical implementation, please check the `ns_quick_sort` namespace inside the **`test/example/quick_sort.cpp`** file.
+For a practical implementation, please check the `ns_quick_sort` namespace inside the **`examples/quick_sort.cpp`** file.
 
 ---
 
