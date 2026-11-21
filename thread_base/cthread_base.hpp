@@ -29,7 +29,7 @@
 #include <cstring>              // std::memcpy
 #include <stdexcept>            // std::runtime_error
 
-#if defined(__posix) || defined(__linux__) || defined(__uinux__)
+#if defined(__posix) || defined(__linux__) || defined(__unix__)
     #include <unistd.h>
     #include <sys/syscall.h>
     #include <sys/types.h>      // gettid()
