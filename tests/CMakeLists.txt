@@ -30,21 +30,21 @@ if (UNIX)
             -Wduplicated-branches -Wformat-security -Wcast-qual -Wnon-virtual-dtor
         )
 
-        # Gestione corretta per generatori a configurazione singola (Make/Ninja)
+        # Convert argument to lower case
         string(TOLOWER "${CMAKE_BUILD_TYPE}" BUILD_TYPE_LOWER)
         message(STATUS "${THREAD_BASE} :: ${CMAKE_BUILD_TYPE} mode")
 
         #
         # DEBUG (G++)
         #
-        if(BUILD_TOLOWER STREQUAL "debug")
+        if(BUILD_TYPE_LOWER STREQUAL "debug")
             add_compile_options(-O0 -g3 -ggdb3)
         endif()
 
         #
         # RELEASE (G++)
         #
-        if(BUILD_TOLOWER STREQUAL "release")
+        if(BUILD_TYPE_LOWER STREQUAL "release")
             add_compile_options(-O3)
             add_compile_definitions(NDEBUG)
         endif()
